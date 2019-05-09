@@ -15,18 +15,14 @@ class ViewController: UIViewController {
     var searchBar = UISearchBar()
     var filteredTableData = [countryName]()
     var resultSearchController = UISearchController()
+    private let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
         setupSearchBar()
         checkConnection()
-        model.getNames(completion: {
-            DispatchQueue.main.async{
-            self.tableView.reloadData()
-                self.filteredTableData = self.model.names
-            }
-        })
+        fetchData()
     }
     
     func setupSearchBar(){
@@ -38,18 +34,35 @@ class ViewController: UIViewController {
             tableView.tableHeaderView = controller.searchBar
             return controller
         })()
-        // Reload the table
         tableView.reloadData()
     }
     func setupTableView(){
         tableView = UITableView(frame: .zero)
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+    }
+    @objc private func refreshData(_ sender: Any) {
+        fetchData()
+    }
+    
+    func fetchData(){
+        if Reachability.isConnectedToNetwork() == true{
+        model.getNames(completion: {
+            DispatchQueue.main.async{
+                self.tableView.reloadData()
+                self.filteredTableData = self.model.names
+            }
+        })
+            tableView.reloadData()
+            self.refreshControl.endRefreshing()
+        }
     }
     func checkConnection(){
         if Reachability.isConnectedToNetwork() == true {
