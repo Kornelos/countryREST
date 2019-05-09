@@ -56,7 +56,7 @@ class CountryDetailModel{
     func getDetails(completion: @escaping () -> ()){
         //Implementing URLSession
         guard let url = URL(string: urlString) else { return }
-        
+        if Reachability.isConnectedToNetwork() == true{
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error != nil {
                 print(error!.localizedDescription)
@@ -75,7 +75,7 @@ class CountryDetailModel{
              completion()
             
             }.resume()
-        
+        }
        
 }
 }

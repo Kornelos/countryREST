@@ -18,9 +18,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.title = "Countries"
         setupTableView()
         setupSearchBar()
+        checkConnection()
         model.getNames(completion: {
             DispatchQueue.main.async{
             self.tableView.reloadData()
@@ -35,15 +35,11 @@ class ViewController: UIViewController {
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
             controller.searchBar.sizeToFit()
-            
             tableView.tableHeaderView = controller.searchBar
-            
             return controller
         })()
-        
         // Reload the table
         tableView.reloadData()
-    
     }
     func setupTableView(){
         tableView = UITableView(frame: .zero)
@@ -55,7 +51,19 @@ class ViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
     }
-
+    func checkConnection(){
+        if Reachability.isConnectedToNetwork() == true {
+            print("Internet connection OK")
+        } else {
+            print("Internet connection FAILED")
+            let alert = UIAlertController(title: "No internet Connection", message: "This application needs internet. Check your connection settings.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+                NSLog("The \"OK\" alert occured.")
+            }))
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+    }
 
 }
 //search Bar extensions

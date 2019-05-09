@@ -19,7 +19,7 @@ class countriesModel{
         //Implementing URLSession
         let urlString = "https://restcountries.eu/rest/v2/all"
         guard let url = URL(string: urlString) else { return }
-        
+        if Reachability.isConnectedToNetwork() == true{
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error != nil {
                 print(error!.localizedDescription)
@@ -36,6 +36,6 @@ class countriesModel{
             }
             completion()
             }.resume()
-        
+        }
     }
 }
