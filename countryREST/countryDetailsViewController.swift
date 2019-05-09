@@ -19,18 +19,19 @@ class countryDetailsViewController: UIViewController {
         //TODO: animated "Loading..." text
         
         model = CountryDetailModel(code: name)
-        
+        view.backgroundColor = .white
         model!.getDetails(completion: {
              DispatchQueue.main.async{
                 if let view = Bundle.main.loadNibNamed("Details", owner: self, options: nil)?.first as? DetailsView{
                     guard let details = self.model?.details else {return}
-                    view.name.text = details.name
+                    self.fillDataFromModel(view: view, details: details)
                     do{
                     let svgString = try String(contentsOf: URL(string: details.flag)!)
                     view.flagImage.loadHTMLString(svgString, baseURL: URL(string: details.flag))
                     } catch {print(error)}
                     let location = CLLocation(latitude: details.latlng[0], longitude: details.latlng[1])
                     self.centerMapOnLocation(location, mapView: view.map, pinTitle: details.name)
+                    
                     view.translatesAutoresizingMaskIntoConstraints = false
                     self.view.addSubview(view)
                     view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -48,7 +49,29 @@ class countryDetailsViewController: UIViewController {
         self.name = name
         
     }
-    
+    func fillDataFromModel(view: DetailsView, details: CountryDetail){
+        view.name.text = details.name
+        view.region.text! += details.region
+        view.subregion.text! += details.subregion
+        view.capital.text! += details.capital
+        view.nativeName.text! += details.nativeName
+        view.area.text! += String(details.area) + "km²"
+        view.population.text! += String(details.population)
+        for currency in details.currencies{
+            view.currencies.text! += " \(currency.name) [\(currency.symbol)],"
+            
+        }
+        view.currencies.text!.removeLast()
+        for language in details.languages{
+            view.languages.text! += " \(language.name) [\(language.nativeName)],"
+            
+        }
+        view.languages.text!.removeLast()
+        for zone in details.timezones{
+            view.timezones.text! += " \(zone),"
+        }
+        view.timezones.text!.removeLast()
+    }
     func centerMapOnLocation(_ location: CLLocation, mapView: MKMapView, pinTitle: String?) {
         let regionRadius: CLLocationDistance = 1000000
         let coordinateRegion = MKCoordinateRegion(center: location.coordinate,

@@ -14,6 +14,7 @@ class navigationController: UINavigationController {
         super.viewDidLoad()
         self.navigationBar.tintColor = .red
         self.title = "Countries"
+        
         // Do any additional setup after loading the view.
     }
     

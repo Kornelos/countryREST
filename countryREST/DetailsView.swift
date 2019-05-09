@@ -12,29 +12,17 @@ import MapKit
     
     class DetailsView: UIView {
     
- //   var model: CountryDetailModel?
-    @IBOutlet weak var name: UILabel!
-    
+        @IBOutlet weak var name: UILabel!
         @IBOutlet weak var flagImage: WKWebView!
-        
         @IBOutlet weak var map: MKMapView!
-        //    convenience init(model: CountryDetailModel){
-//        self.init()
-//        self.model = model
-//    }
-//
-//     func instanceFromNib(){
-//        self.addSubview(UINib(nibName: "Details", bundle: nil).instantiate(withOwner: self, options: nil)[0] as! UIView)
-//    }
-//
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        setupUI()
-//    }
-//
-//    func setupUI(){
-//        name.text = model?.details?.name
-//
-//    }
+        @IBOutlet weak var region: UILabel!
+        @IBOutlet weak var subregion: UILabel!
+        @IBOutlet weak var capital: UILabel!
+        @IBOutlet weak var area: UILabel!
+        @IBOutlet weak var population: UILabel!
+        @IBOutlet weak var languages: UILabel!
+        @IBOutlet weak var currencies: UILabel!
+        @IBOutlet weak var nativeName: UILabel!
+        @IBOutlet weak var timezones: UILabel!
+        
 }
-

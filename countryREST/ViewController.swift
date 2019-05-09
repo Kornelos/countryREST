@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.title = "Countries"
         setupTableView()
         setupSearchBar()
         model.getNames(completion: {
@@ -27,6 +28,7 @@ class ViewController: UIViewController {
             }
         })
     }
+    
     func setupSearchBar(){
         resultSearchController = ({
             let controller = UISearchController(searchResultsController: nil)
@@ -78,10 +80,17 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating{
 //Table View extensions
 extension ViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        resultSearchController.dismiss(animated: true)
-        resultSearchController.searchBar.text = ""
-        self.navigationController?.pushViewController(countryDetailsViewController(name: model.names[indexPath.row].alpha3Code), animated: true)
         
+        if(resultSearchController.isActive &&  resultSearchController.searchBar.text != ""){
+            resultSearchController.dismiss(animated: true)
+            self.navigationController?.pushViewController(countryDetailsViewController(name: filteredTableData[indexPath.row].alpha3Code), animated: true)
+            
+        } else {
+            resultSearchController.dismiss(animated: true)
+            self.navigationController?.pushViewController(countryDetailsViewController(name: model.names[indexPath.row].alpha3Code), animated: true)
+            
+        }
+       resultSearchController.searchBar.text = ""
     }
     
 }
