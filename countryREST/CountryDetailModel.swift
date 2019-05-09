@@ -66,7 +66,7 @@ class CountryDetailModel{
             do {
                 self.details = try
                     JSONDecoder().decode(CountryDetail.self, from: data)
-                print(self.details!)
+                
                 
             } catch let jsonErr {
                 print(jsonErr)
