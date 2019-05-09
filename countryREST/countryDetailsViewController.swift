@@ -16,21 +16,26 @@ class countryDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .green
+        //TODO: animated "Loading..." text
+        
         model = CountryDetailModel(code: name)
         
         model!.getDetails(completion: {
              DispatchQueue.main.async{
                 if let view = Bundle.main.loadNibNamed("Details", owner: self, options: nil)?.first as? DetailsView{
-                    view.name.text = self.model?.details?.name
+                    guard let details = self.model?.details else {return}
+                    view.name.text = details.name
                     do{
-                    let svgString = try String(contentsOf: URL(string: (self.model?.details?.flag)!)!)
-                    view.flagImage.loadHTMLString(svgString, baseURL: URL(string: (self.model?.details?.flag)!))
-                    
+                    let svgString = try String(contentsOf: URL(string: details.flag)!)
+                    view.flagImage.loadHTMLString(svgString, baseURL: URL(string: details.flag))
                     } catch {print(error)}
-                    let location = CLLocation(latitude: (self.model?.details?.latlng[0])!, longitude: (self.model?.details?.latlng[1])!)
-                    self.centerMapOnLocation(location, mapView: view.map, pinTitle: self.model?.details?.name)
+                    let location = CLLocation(latitude: details.latlng[0], longitude: details.latlng[1])
+                    self.centerMapOnLocation(location, mapView: view.map, pinTitle: details.name)
+                    view.translatesAutoresizingMaskIntoConstraints = false
                     self.view.addSubview(view)
+                    view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+                    view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+                    view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
                 }
                 }
             
