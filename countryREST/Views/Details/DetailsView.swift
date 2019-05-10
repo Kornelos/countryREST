@@ -25,4 +25,25 @@ import MapKit
         @IBOutlet weak var nativeName: UILabel!
         @IBOutlet weak var timezones: UILabel!
         
+        func config(with details: CountryDetail){
+            name.text = details.name
+            region.text! += details.region
+            subregion.text! += details.subregion
+            capital.text! += details.capital
+            nativeName.text! += details.nativeName
+            area.text! += String(details.area) + "km²"
+            population.text! += String(details.population)
+            for currency in details.currencies{
+                currencies.text! += " \(currency.name) [\(currency.symbol)],"
+            }
+            currencies.text!.removeLast()
+            for language in details.languages{
+                languages.text! += " \(language.name) [\(language.nativeName)],"
+            }
+            languages.text!.removeLast()
+            for zone in details.timezones{
+                timezones.text! += " \(zone),"
+            }
+            timezones.text!.removeLast()
+        }
 }
