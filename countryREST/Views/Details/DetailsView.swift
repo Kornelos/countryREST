@@ -24,8 +24,11 @@ import MapKit
         @IBOutlet weak var currencies: UILabel!
         @IBOutlet weak var nativeName: UILabel!
         @IBOutlet weak var timezones: UILabel!
+        @IBOutlet weak var mapActivityIndicator: UIActivityIndicatorView!
         
-        func config(with details: CountryDetail){
+        func config(with details: CountryDetailModel){
+            loadFlag(urlString: details.flag)
+            centerMapOnLocation(CLLocation(latitude: details.latlng[0], longitude: details.latlng[1]), mapView: map, pinTitle: details.name)
             name.text = details.name
             region.text! += details.region
             subregion.text! += details.subregion
@@ -45,5 +48,39 @@ import MapKit
                 timezones.text! += " \(zone),"
             }
             timezones.text!.removeLast()
+        }
+        
+        private func loadFlag(urlString: String){
+        
+                let html: String = """
+                <html>
+                <head>
+                <style type="text/css">
+                div{
+                background:url(\(urlString)) no-repeat center center;
+                background-size : contain;
+                position: absolute;
+                top: 0; right: 0; bottom: 0; left: 0;
+                }
+                </style>
+                </head>
+                <body>
+                <div>
+                </div>
+                </body>
+                </html>
+                """
+                flagImage.loadHTMLString(html, baseURL: URL(string: urlString))
+        }
+        private func centerMapOnLocation(_ location: CLLocation, mapView: MKMapView, pinTitle: String?) {
+            let regionRadius: CLLocationDistance = 1000000
+            let coordinateRegion = MKCoordinateRegion(center: location.coordinate,
+                                                      latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
+            mapView.setRegion(coordinateRegion, animated: true)
+            let pin: MKPointAnnotation = MKPointAnnotation()
+            pin.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);
+            pin.title = pinTitle ?? ""
+            mapView.addAnnotation(pin)
+            
         }
 }

@@ -11,7 +11,8 @@ import UIKit
 class MainViewController: UIViewController {
 
     var tableView: UITableView!
-    let model = CountriesModel()
+    var model = CountryNamesModel()
+    let networkingManager = NetworkingManager()
     var searchBar = UISearchBar()
     var filteredTableData = [CountryName]()
     var resultSearchController = UISearchController()
@@ -21,7 +22,6 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         setupTableView()
         setupSearchBar()
-        checkConnection()
         fetchData()
     }
     
@@ -53,8 +53,8 @@ class MainViewController: UIViewController {
     }
     
     func fetchData(){
-        if Reachability.isConnectedToNetwork() == true{
-        model.getNames(completion: {
+            networkingManager.getNames(completion: {responseModel in
+                self.model = responseModel
             DispatchQueue.main.async{
                 self.tableView.reloadData()
                 self.filteredTableData = self.model.names
@@ -62,21 +62,21 @@ class MainViewController: UIViewController {
         })
             tableView.reloadData()
             self.refreshControl.endRefreshing()
-        }
+        
     }
-    func checkConnection(){
-        if Reachability.isConnectedToNetwork() == true {
-            print("Internet connection OK")
-        } else {
-            print("Internet connection FAILED")
-            let alert = UIAlertController(title: "No internet Connection", message: "This application needs internet. Check your connection settings.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-                NSLog("The \"OK\" alert occured.")
-            }))
-            self.present(alert, animated: true, completion: nil)
-            
-        }
-    }
+//    func checkConnection(){
+//        if Reachability.isConnectedToNetwork() == true {
+//            print("Internet connection OK")
+//        } else {
+//            print("Internet connection FAILED")
+//            let alert = UIAlertController(title: "No internet Connection", message: "This application needs internet. Check your connection settings.", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+//                NSLog("The \"OK\" alert occured.")
+//            }))
+//            self.present(alert, animated: true, completion: nil)
+//
+//        }
+//    }
 
 }
 //search Bar extensions
@@ -100,19 +100,23 @@ extension MainViewController: UISearchBarDelegate, UISearchResultsUpdating{
 }
 //Table View extensions
 extension MainViewController: UITableViewDelegate{
-    //to edit
+   
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        var code: String
         if(resultSearchController.isActive &&  resultSearchController.searchBar.text != ""){
-            resultSearchController.dismiss(animated: true)
-            self.navigationController?.pushViewController(DetailsViewController(name: filteredTableData[indexPath.row].alpha3Code), animated: true)
+            code = filteredTableData[indexPath.row].alpha3Code
             
         } else {
-            resultSearchController.dismiss(animated: true)
-            self.navigationController?.pushViewController(DetailsViewController(name: model.names[indexPath.row].alpha3Code), animated: true)
-            
+            code = model.names[indexPath.row].alpha3Code
         }
-       resultSearchController.searchBar.text = ""
+        
+        networkingManager.getDetails(with: code) { (detailModel) in
+             DispatchQueue.main.async{
+            self.resultSearchController.dismiss(animated: true)
+            self.resultSearchController.searchBar.text = ""
+            self.navigationController?.pushViewController(DetailsViewController(model: detailModel), animated: true)
+            }
+        }
     }
     
 }
