@@ -49,7 +49,7 @@ import MapKit
             }
             timezones.text!.removeLast()
         }
-        
+        //HTML code used for centering svg image inside WKWebView
         private func loadFlag(urlString: String){
         
                 let html: String = """
@@ -74,8 +74,7 @@ import MapKit
         }
         private func centerMapOnLocation(_ location: CLLocation, mapView: MKMapView, pinTitle: String?) {
             let regionRadius: CLLocationDistance = 1000000
-            let coordinateRegion = MKCoordinateRegion(center: location.coordinate,
-                                                      latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
+            let coordinateRegion = MKCoordinateRegion(center: location.coordinate,latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
             mapView.setRegion(coordinateRegion, animated: true)
             let pin: MKPointAnnotation = MKPointAnnotation()
             pin.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude);

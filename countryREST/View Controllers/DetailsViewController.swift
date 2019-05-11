@@ -17,7 +17,6 @@ class DetailsViewController: UIViewController, WKNavigationDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .white
         guard let detailsView = Bundle.main.loadNibNamed("Details", owner: self, options: nil)?.first as? DetailsView else {return}
         detailsView.config(with: model!)

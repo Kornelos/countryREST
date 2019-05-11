@@ -36,6 +36,7 @@ class MainViewController: UIViewController {
         })()
         tableView.reloadData()
     }
+    
     func setupTableView(){
         tableView = UITableView(frame: .zero)
         tableView.dataSource = self
@@ -48,36 +49,33 @@ class MainViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
     }
+    
     @objc private func refreshData(_ sender: Any) {
         fetchData()
     }
     
     func fetchData(){
-            networkingManager.getNames(completion: {responseModel in
+        networkingManager.getNames(success: {responseModel in
                 self.model = responseModel
-            DispatchQueue.main.async{
+            
                 self.tableView.reloadData()
                 self.filteredTableData = self.model.names
-            }
+            
+        }, failure: { error in
+            self.showErrorAlert(with: error)
+            
         })
             tableView.reloadData()
             self.refreshControl.endRefreshing()
         
     }
-//    func checkConnection(){
-//        if Reachability.isConnectedToNetwork() == true {
-//            print("Internet connection OK")
-//        } else {
-//            print("Internet connection FAILED")
-//            let alert = UIAlertController(title: "No internet Connection", message: "This application needs internet. Check your connection settings.", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-//                NSLog("The \"OK\" alert occured.")
-//            }))
-//            self.present(alert, animated: true, completion: nil)
-//
-//        }
-//    }
-
+    func showErrorAlert(with error: Error){
+        let alert = UIAlertController(title: "Something went wrong.", message:
+            "\(error.localizedDescription)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 //search Bar extensions
 extension MainViewController: UISearchBarDelegate, UISearchResultsUpdating{
@@ -110,13 +108,15 @@ extension MainViewController: UITableViewDelegate{
             code = model.names[indexPath.row].alpha3Code
         }
         
-        networkingManager.getDetails(with: code) { (detailModel) in
-             DispatchQueue.main.async{
+        networkingManager.getDetails(with: code, success: { (detailModel) in
+            
             self.resultSearchController.dismiss(animated: true)
             self.resultSearchController.searchBar.text = ""
             self.navigationController?.pushViewController(DetailsViewController(model: detailModel), animated: true)
-            }
-        }
+            
+        }, failure: {error in
+            self.showErrorAlert(with: error)
+        })
     }
     
 }
