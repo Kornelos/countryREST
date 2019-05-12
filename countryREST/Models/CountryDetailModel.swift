@@ -14,9 +14,9 @@ struct CountryDetailModel: Codable{
     let capital: String
     let region: String
     let subregion: String
-    let population: Int
+    let population: Int?
     let latlng: [Double]
-    let area: Double
+    let area: Double?
     let timezones: [String]
     let nativeName: String
     let currencies: [Currency]

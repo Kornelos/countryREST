@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49886AF52288BCB4002BE27B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49886AF42288BCB4002BE27B /* WebKit.framework */; };
 		5F078A3122806990002E7725 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F078A3022806990002E7725 /* DetailsViewController.swift */; };
 		5F078A4522807D5C002E7725 /* Details.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F078A4422807D5C002E7725 /* Details.xib */; };
 		5F078A4722807DAF002E7725 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F078A4622807DAF002E7725 /* DetailsView.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		49886AF42288BCB4002BE27B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		5F078A3022806990002E7725 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		5F078A4422807D5C002E7725 /* Details.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Details.xib; sourceTree = "<group>"; };
 		5F078A4622807DAF002E7725 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49886AF52288BCB4002BE27B /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +69,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49886AF32288BCB4002BE27B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49886AF42288BCB4002BE27B /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5F0D32152284CA7B00997FC7 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +128,7 @@
 				5F31152B227B10BA00F6F3BE /* Info.plist */,
 				5F311533227B10BA00F6F3BE /* countryRESTTests */,
 				5F31151D227B10B800F6F3BE /* Products */,
+				49886AF32288BCB4002BE27B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -209,9 +221,11 @@
 				TargetAttributes = {
 					5F31151B227B10B800F6F3BE = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					5F31152F227B10BA00F6F3BE = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 5F31151B227B10B800F6F3BE;
 					};
 				};
@@ -429,7 +443,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = skorkakornel.countryREST;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -447,7 +461,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = skorkakornel.countryREST;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -467,7 +481,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = skorkakornel.countryRESTTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/countryREST.app/countryREST";
 			};
@@ -488,7 +502,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = skorkakornel.countryRESTTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/countryREST.app/countryREST";
 			};

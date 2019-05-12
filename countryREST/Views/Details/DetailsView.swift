@@ -28,14 +28,16 @@ import MapKit
         
         func config(with details: CountryDetailModel){
             loadFlag(urlString: details.flag)
+            if details.latlng.isEmpty == false{
             centerMapOnLocation(CLLocation(latitude: details.latlng[0], longitude: details.latlng[1]), mapView: map, pinTitle: details.name)
+            }
             name.text = details.name
             region.text! += details.region
             subregion.text! += details.subregion
             capital.text! += details.capital
             nativeName.text! += details.nativeName
-            area.text! += String(details.area) + "km²"
-            population.text! += String(details.population)
+            area.text! += String(details.area ?? 0.0) + "km²"
+            population.text! += String(details.population ?? 0)
             for currency in details.currencies{
                 currencies.text! += " \(currency.name) [\(currency.symbol)],"
             }
